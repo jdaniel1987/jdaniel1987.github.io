@@ -1,0 +1,125 @@
+---
+layout: post
+title: "Introduction to Dapper"
+date: 2024-09-07
+categories: [C#, .NET, ORM]
+permalink: /Dapper
+---
+
+# **Dapper**
+
+Dapper is a micro ORM (Object-Relational Mapper) for .NET that provides a lightweight and fast alternative to traditional ORMs like Entity Framework. Instead of fully mapping classes to database tables, Dapper excels at simplifying SQL query execution and mapping results directly to C# objects.
+
+## **Advantages of Dapper**
+
+- **Performance:** Dapper is incredibly fast, nearly matching the speed of using ADO.NET directly.
+- **Simplicity:** With minimal configuration, you can integrate Dapper quickly into any .NET project.
+- **Flexibility:** Dapper allows you to write raw SQL queries, giving you complete control over database interactions.
+
+## **Example of Usage**
+
+**1. Install the nuget package** 
+
+Add Dapper to your project by installing the NuGet package. There are various methods to do this, so choose the one that suits you best.
+For example, in Visual Studio: Right-click on your project -> Manage NuGet Packages... -> Browse
+Search for "Dapper," select it, and click Install.
+![Alt text](/assets/img/posts/dapper-install.png)
+
+**2. Configure access to DB**  
+
+All you need is your database's connection string.
+While you can retrieve it using IConfiguration if it’s set in appsettings.json, for this example, we'll define it as a global variable in our repository:
+```c#
+private static string _connectionString = "{YourDbConnectionString}";
+```
+
+**3. Query the Database with Dapper:**
+**Get one record:**  
+```c#
+public async Task<Mark> GetMark(int id)
+{
+    string sql = @"SELECT [Id]
+                          ,[Name]
+                          ,[Surname]
+                          ,[Score]
+                      FROM [Marks] 
+                      WHERE Id = @id";
+    var db = new SqlConnection(_connectionString);
+    var mark = await db.QueryFirstAsync<Mark>(sql, new { id });
+
+    return mark;
+}
+```
+
+**Get multiple records:**  
+```c#
+public async Task<IReadOnlyCollection<Mark>> GetMarks()
+{
+    var sql = @"SELECT [Id]
+                       ,[Name]
+                       ,[Surname]
+                       ,[Score]
+                   FROM [Marks] 
+                   ORDER BY Surname";
+    using var db = new SqlConnection(_connectionString);
+    var marks = await db.QueryAsync<Mark>(sql);
+
+    return marks.ToImmutableArray();
+}
+```
+
+**Add one record:**
+```c#
+public async Task<int> CreateMark(Mark mark)
+{
+    var sql = @"INSERT INTO [Marks] ([Name], [Surname], [Score])
+                  OUTPUT INSERTED.Id
+                  VALUES (@name, @surname, @mark);";
+
+    var db = new SqlConnection(_connectionString);
+    var id = await db.QuerySingleAsync<int>(sql, new
+    {
+        name = mark.Name,
+        surname = mark.Surname,
+        mark = mark.Score,
+    });
+
+    return id;
+}
+```
+
+**Update one record:**
+```c#
+public async Task UpdateMark(Mark mark, int id)
+{
+    string sql = @"UPDATE [Marks] 
+                       SET
+                            [Name] = @name, 
+                            [Surname] = @surname, 
+                            [Score] = @mark 
+                       WHERE 
+                            [Id] = @id";
+    var db = new SqlConnection(_connectionString);
+    await db.QueryAsync(sql, new
+    {
+        id,
+        name = mark.Name,
+        surname = mark.Surname,
+        mark = mark.Score,
+    });
+}
+```
+
+**Delete one record:**
+```c#
+public async Task DeleteMark(int id)
+{
+    string sql = @"DELETE FROM [Marks]       
+                       WHERE [Id] = @id";
+    var db = new SqlConnection(_connectionString);
+    await db.QueryAsync(sql, new { id });
+}
+```
+
+### Link to example project:
+![GitHub](/assets/images/icons8-github.svg)[Introduction to Dapper](https://github.com/jdaniel1987/DapperExample)
