@@ -122,4 +122,4 @@ public async Task DeleteMark(int id)
 ```
 
 ### Link to example project:
-![GitHub](/assets/images/icons8-github.svg)[Introduction to Dapper](https://github.com/jdaniel1987/DapperExample)
+<!-- ![GitHub](/assets/images/icons8-github.svg)[Introduction to Dapper](https://github.com/jdaniel1987/DapperExample) -->
