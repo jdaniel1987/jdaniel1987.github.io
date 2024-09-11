@@ -2,7 +2,7 @@
 layout: post
 title: "Introduction to Dapper"
 date: 2024-09-07
-categories: [C#, .NET, ORM]
+categories: [C#, .NET, ORM, Dapper, Data Access, Databases, Performance]
 permalink: /Dapper
 ---
 
