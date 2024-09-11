@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Introduction to Minimal APIs in .NET"
-date: 2024-09-12
+date: 2024-09-11
 categories: [C#, .NET, Minimal APIs, REST, Web Development]
 permalink: /MinimalApis
 ---
