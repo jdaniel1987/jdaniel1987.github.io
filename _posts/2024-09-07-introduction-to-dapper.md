@@ -119,5 +119,5 @@ public async Task DeleteMark(int id)
 }
 ```
 
-#### Link to example project
+### Link to example project
 [![GitHub](/assets/icons/icons8-github.svg)](https://github.com/jdaniel1987/DapperExample) [DapperExample](https://github.com/jdaniel1987/DapperExample)
