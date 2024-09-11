@@ -6,8 +6,6 @@ categories: [C#, .NET, ORM]
 permalink: /Dapper
 ---
 
-# **Dapper**
-
 Dapper is a micro ORM (Object-Relational Mapper) for .NET that provides a lightweight and fast alternative to traditional ORMs like Entity Framework. Instead of fully mapping classes to database tables, Dapper excels at simplifying SQL query execution and mapping results directly to C# objects.
 
 ## **Advantages of Dapper**
@@ -16,16 +14,16 @@ Dapper is a micro ORM (Object-Relational Mapper) for .NET that provides a lightw
 - **Simplicity:** With minimal configuration, you can integrate Dapper quickly into any .NET project.
 - **Flexibility:** Dapper allows you to write raw SQL queries, giving you complete control over database interactions.
 
-## **Example of Usage**
+## **Examples of Usage**
 
-**1. Install the nuget package** 
+### **1. Install the nuget package**
 
 Add Dapper to your project by installing the NuGet package. There are various methods to do this, so choose the one that suits you best.
 For example, in Visual Studio: Right-click on your project -> Manage NuGet Packages... -> Browse
 Search for "Dapper," select it, and click Install.
 ![Alt text](/assets/img/posts/dapper-install.png)
 
-**2. Configure access to DB**  
+### **2. Configure access to DB**
 
 All you need is your database's connection string.
 While you can retrieve it using IConfiguration if it’s set in appsettings.json, for this example, we'll define it as a global variable in our repository:
@@ -33,8 +31,8 @@ While you can retrieve it using IConfiguration if it’s set in appsettings.json
 private static string _connectionString = "{YourDbConnectionString}";
 ```
 
-**3. Query the Database with Dapper:**
-**Get one record:**  
+### **3. Query the Database with Dapper**
+#### **Get one record**  
 ```c#
 public async Task<Mark> GetMark(int id)
 {
@@ -51,7 +49,7 @@ public async Task<Mark> GetMark(int id)
 }
 ```
 
-**Get multiple records:**  
+#### **Get multiple records**
 ```c#
 public async Task<IReadOnlyCollection<Mark>> GetMarks()
 {
@@ -68,7 +66,7 @@ public async Task<IReadOnlyCollection<Mark>> GetMarks()
 }
 ```
 
-**Add one record:**
+#### **Add one record**
 ```c#
 public async Task<int> CreateMark(Mark mark)
 {
@@ -88,7 +86,7 @@ public async Task<int> CreateMark(Mark mark)
 }
 ```
 
-**Update one record:**
+#### **Update one record**
 ```c#
 public async Task UpdateMark(Mark mark, int id)
 {
@@ -110,7 +108,7 @@ public async Task UpdateMark(Mark mark, int id)
 }
 ```
 
-**Delete one record:**
+#### **Delete one record**
 ```c#
 public async Task DeleteMark(int id)
 {
@@ -121,5 +119,5 @@ public async Task DeleteMark(int id)
 }
 ```
 
-### Link to example project:
+#### Link to example project
 [![GitHub](/assets/icons/icons8-github.svg)](https://github.com/jdaniel1987/DapperExample) [DapperExample](https://github.com/jdaniel1987/DapperExample)
