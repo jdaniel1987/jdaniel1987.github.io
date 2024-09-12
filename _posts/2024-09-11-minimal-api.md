@@ -35,6 +35,8 @@ app.Run();
 
 In this example, a simple GET endpoint is defined that returns a greeting. Notice how the setup is concise, with no need for controllers or additional routing configurations.
 
+**NOTE**: You can use all existing verbs in Minimal APIs (Get, Post, Put, Patch, Delete)
+
 
 ### **2. Adding Parameters to Routes**
 
@@ -45,6 +47,23 @@ app.MapGet("/api/greet/{name}", (string name) => $"Hello, {name}!");
 ```
 
 This endpoint greets the user by name, demonstrating how Minimal APIs handle route parameters with ease.
+
+Attributes can be used on parameters to provide additional metadata, control binding behavior, or apply validation:
+
+```c#
+app.MapGet("/api/resource", ([FromQuery] string param) =>
+{
+    return $"Query parameter: {param}";
+});
+```
+
+Here are the attributes commonly used in ASP.NET Core Minimal APIs:
+
+[FromQuery] – Binds a parameter to a query string value.  
+[FromRoute] – Binds a parameter to a route value.  
+[FromBody] – Binds a parameter to the body of the request.  
+[FromHeader] – Binds a parameter to a value from the HTTP request headers.  
+[FromForm] – Binds a parameter to form data.  
 
 ### **3. Integrating with Middleware(Optional)**
 
@@ -74,13 +93,82 @@ public class RequestTimingMiddleware
 }
 ```
 
-To use the middleware, you need to register it in the request pipeline in Program.cs
-```c# Program.cs
+To use the middleware, you need to register it in the request pipeline in Program.cs:
+```c#
 app.UseMiddleware<RequestTimingMiddleware>();
 ```
 In this example, the middleware measures the time taken to process each request and adds this value as a X-Elapsed-Time header in the response. This can be useful for debugging or monitoring the performance of your application.
 
-
 By leveraging middleware, you can manage cross-cutting concerns such as logging, authentication, and more, without complicating your endpoint definitions.
+
+### **4. Using Filters**
+Filters are used to handle concerns such as validation, error handling, logging, and other cross-cutting concerns.
+```c#
+app.MapPost("/users", async (User user) =>
+{
+    // .................... logic
+    return Results.Created($"/users/{user.Id}", user);
+})
+.AddEndpointFilter(async (context, next) =>
+{
+    var user = (User)context.Arguments[0];
+
+    if (string.IsNullOrWhiteSpace(user.Name) || !user.Email.Contains("@"))
+    {
+        return Results.BadRequest("Invalid user data");
+    }
+
+    return await next(context);
+});
+```
+
+### **5. Dependency Injection**
+In Minimal APIs, services registered in the application's service container (using builder.Services.Add...) can be injected as parameters into the endpoint handlers.
+```c#
+builder.Services.AddScoped<IMyService, MyService>();
+```
+
+```c#
+app.MapGet("/greet", (IMyService service) =>
+{
+    return service.GetGreeting();
+});
+```
+
+### **6. Documenting with Open API**
+Used to automatically generate detailed API documentation. This is typically done through tools like Swagger, which generate an interactive interface based on your API's structure.
+
+```c#
+app.MapGet("/greet", () => "Hello, World!")
+    .WithName("Greet")    // Assign a name to the operation
+    .WithOpenApi();       // Automatically document this route
+```
+![Open Api 1](/assets/img/posts/swagger-open-api.png)
+
+```c#
+app.MapPost("api/AddGameConsole", (GameConsole gameConsole) =>
+{
+    // .................................... Logic
+
+    return result.IsSuccess ?
+        Results.Created(gameConsole) :
+        Results.BadRequest(result.Error);
+})
+.WithOpenApi(operation =>
+{
+    operation.Summary = "Adds a new games console";
+    operation.Description = "Creates a new games console entry in the system.";
+    return operation;
+})
+.WithName(nameof(AddGameConsoleModule))
+.WithTags(nameof(GameConsole))
+.ProducesValidationProblem()
+.Produces(StatusCodes.Status201Created)
+.Produces(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError);
+```
+![Open Api 1](/assets/img/posts/swagger-open-api-detailed.png)
+
+### **Conclusion**
 
 Minimal APIs are a great addition to the .NET ecosystem, offering a straightforward and efficient way to build APIs. Whether you’re developing a small microservice or a larger application, Minimal APIs provide the flexibility and simplicity needed to get your project up and running quickly.
