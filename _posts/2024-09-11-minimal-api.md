@@ -46,7 +46,7 @@ app.MapGet("/api/greet/{name}", (string name) => $"Hello, {name}!");
 
 This endpoint greets the user by name, demonstrating how Minimal APIs handle route parameters with ease.
 
-### **3. Integrating with Middleware**
+### **3. Integrating with Middleware(Optional)**
 
 Minimal APIs can be easily integrated with ASP.NET Core middleware to add custom logic to the request processing pipeline:
 
