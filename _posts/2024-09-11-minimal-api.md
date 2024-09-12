@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Introduction to Minimal APIs in .NET"
+title: "Introduction to Minimal APIs"
 date: 2024-09-11
 categories: [C#, .NET, Minimal APIs, REST, Web Development]
 permalink: /MinimalApis
@@ -172,3 +172,7 @@ app.MapPost("api/AddGameConsole", (GameConsole gameConsole) =>
 ### **Conclusion**
 
 Minimal APIs are a great addition to the .NET ecosystem, offering a straightforward and efficient way to build APIs. Whether you’re developing a small microservice or a larger application, Minimal APIs provide the flexibility and simplicity needed to get your project up and running quickly.
+
+### **Extra: Carter**
+Take a look at my "Introduction to Carter" post, where I explain how to split Minimal API endpoints into different files:
+[Introduction to Carter](/Carter)
