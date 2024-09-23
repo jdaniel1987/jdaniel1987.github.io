@@ -28,8 +28,8 @@ url: "https://jdaniel1987.github.io/"
 github:
   username: jdaniel1987 # change to your GitHub username
 
-# twitter:
-#   username: twitter_username # change to your Twitter username
+twitter:
+  username: jdanielDant1987 # change to your Twitter username
 
 social:
   # Change to your full name.
@@ -38,7 +38,7 @@ social:
   email: jdaniel1987@hotmail.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    # - https://twitter.com/username # change to your Twitter homepage
+    - https://x.com/jdanielDant1987 # change to your Twitter homepage
     - https://github.com/jdaniel1987 # change to your GitHub homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
@@ -59,7 +59,7 @@ webmaster_verifications:
 # Web Analytics Settings
 analytics:
   google:
-    id: # fill in your Google Analytics ID
+    id: 458007414 # fill in your Google Analytics ID
   goatcounter:
     id: # fill in your GoatCounter ID
   umami:
