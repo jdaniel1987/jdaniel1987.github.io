@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "A Complete Guide to Clean Architecture"
-date: 2024-10-17 00:00:00
+date: 2024-10-07 00:00:00
 categories: [C#, .NET, Clean Architecture, Architecture, Software Design, Separation of Concerns, Dependency Inversion]
 permalink: /CleanArchitecture
 ---
