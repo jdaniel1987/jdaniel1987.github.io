@@ -133,6 +133,57 @@ In cases where retries fail, you can opt to requeue the failed messages. However
 - Enhancing visibility: Teams can monitor DLQs to proactively address recurring issues.
 - Implementing both retry policies and dead-letter handling ensures a more robust and fault-tolerant event-driven architecture.
 
+```csharp
+using Azure.Messaging.ServiceBus;
+using Polly;
+using Polly.Retry;
+using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    private const string ConnectionString = "<Your-Service-Bus-Connection-String>";
+    private const string QueueName = "example-queue";
+
+    static async Task Main(string[] args)
+    {
+        var client = new ServiceBusClient(ConnectionString);
+        var sender = client.CreateSender(QueueName);
+
+        var retryPolicy = Policy
+            .Handle<ServiceBusException>(ex => ex.IsTransient)
+            .WaitAndRetryAsync(
+                retryCount: 3,
+                sleepDurationProvider: attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt)),
+                onRetry: (exception, duration, attempt, context) =>
+                {
+                    Console.WriteLine($"Retrying due to: {exception.Message}. Attempt: {attempt}");
+                });
+
+        var message = new ServiceBusMessage("Hello, Service Bus!");
+
+        try
+        {
+            await retryPolicy.ExecuteAsync(async () =>
+            {
+                Console.WriteLine("Sending message...");
+                await sender.SendMessageAsync(message);
+                Console.WriteLine("Message sent successfully!");
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to send message after retries. Exception: {ex.Message}");
+        }
+        finally
+        {
+            await sender.DisposeAsync();
+            await client.DisposeAsync();
+        }
+    }
+}
+```
+
 ## Comparing Message Brokers ##
 
 | Feature     | Azure Service Bus       | RabbitMQ            | Kafka               | Amazon SQS           |
