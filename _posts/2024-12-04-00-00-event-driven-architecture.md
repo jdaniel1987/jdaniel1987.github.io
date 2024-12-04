@@ -3,7 +3,7 @@ layout: post
 title: "Understanding Event-Driven Architecture"
 date: 2024-12-04 00:00:00
 categories: [C#, .NET, Event-Driven, MassTransit, Azure]
-permalink: /EventDrivenWithAzureMassTransit
+permalink: /EventDrivenArchitecture
 ---
 
 **Event-Driven Architecture** (EDA) is a software design pattern that decouples producers and consumers using events as the core means of communication. In this post, we'll explore how to implement an event-driven system using **Azure Service Bus** and **MassTransit** in .NET.
