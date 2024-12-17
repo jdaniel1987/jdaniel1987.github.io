@@ -1,25 +1,25 @@
 ---
 layout: post
-title: "The Outbox Pattern"
+title: "The Transactional Outbox Pattern"
 date: 2024-12-17 00:00:00
 categories: [C#, .NET, Patterns, Outbox, Distributed systems]
 permalink: /OutboxPattern
 ---
 
-**The Outbox Pattern** is a powerful technique used in distributed systems to ensure message delivery reliability when integrating with external systems or event-based architectures. In this guide, we will explore how to implement the Outbox Pattern in .NET.
+**The Transactional Outbox Pattern** is a powerful technique used in distributed systems to ensure message delivery reliability when integrating with external systems or event-based architectures. In this guide, we will explore how to implement the Outbox Pattern in .NET.
 
-![Outbox Pattern](/assets/img/posts/outbox-pattern.png)
+![Outbox Pattern](/assets/img/posts/transactional-outbox-pattern.png)
 
-## What is the Outbox Pattern? ##
+## What is the Transactional Outbox Pattern? ##
 
-The Outbox Pattern **ensures that database operations and message publishing are performed atomically**, meaning they are treated as a single, indivisible unit of work. This guarantees that either **all operations succeed together or none of them take effect**. This is especially important when working with event-driven systems to avoid inconsistencies caused by partial failures.
+The Transactional Outbox Pattern **ensures that database operations and message publishing are performed atomically**, meaning they are treated as a single, indivisible unit of work. This guarantees that either **all operations succeed together or none of them take effect**. This is especially important when working with event-driven systems to avoid inconsistencies caused by partial failures.
 
 ### How It Works ###
 
 1. **Transactional Writing**: Events or messages to be sent are written to an `Outbox` table in the same database transaction as the business operation.
 2. **Background Processing**: A separate process reads messages from the `Outbox` table and publishes them to the external system (e.g., a message broker).
 
-## Setting Up the Outbox Pattern ##
+## Setting Up the Transactional Outbox Pattern ##
 
 ### Step 1: Create the Outbox Table
 
@@ -139,7 +139,7 @@ Add the service to your `Program.cs` or `Startup.cs`:
 builder.Services.AddHostedService<OutboxProcessor>();
 ```
 
-## Benefits of the Outbox Pattern
+## Benefits of the Transactional Outbox Pattern
 
 - **Atomicity**: Ensures that business operations and message publishing happen together.
 - **Reliability**: Reduces the risk of lost messages in distributed systems.
@@ -147,4 +147,4 @@ builder.Services.AddHostedService<OutboxProcessor>();
 
 ## Conclusion
 
-The Outbox Pattern is a robust solution for ensuring reliable messaging in distributed systems. By implementing it in .NET, you can build resilient and scalable applications that handle message delivery with consistency and efficiency.
+The Transactional Outbox Pattern is a robust solution for ensuring reliable messaging in distributed systems. By implementing it in .NET, you can build resilient and scalable applications that handle message delivery with consistency and efficiency.
