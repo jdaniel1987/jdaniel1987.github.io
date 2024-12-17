@@ -3,7 +3,7 @@ layout: post
 title: "The Transactional Outbox Pattern"
 date: 2024-12-17 00:00:00
 categories: [C#, .NET, Patterns, Outbox, Distributed systems]
-permalink: /OutboxPattern
+permalink: /TransactionalOutboxPattern
 ---
 
 **The Transactional Outbox Pattern** is a powerful technique used in distributed systems to ensure message delivery reliability when integrating with external systems or event-based architectures. In this guide, we will explore how to implement the Outbox Pattern in .NET.
