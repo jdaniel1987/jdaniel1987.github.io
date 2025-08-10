@@ -10,18 +10,20 @@ Domain-Driven Design (DDD) is a strategic approach to software development that 
 
 ## Core Concepts of DDD ##
 ### 1. Ubiquitous Language ###
-The Ubiquitous Language is a **shared vocabulary used by both developers and domain experts** (i.e Producy Owner). It ensures that all parties involved in the development process are on the same page, making communication more efficient. For example:
+The Ubiquitous Language is a **shared vocabulary used by both developers and domain experts** (i.e Product Owner). It ensures that all parties involved in the development process are on the same page, making communication more efficient. For example:
 - **Customer** means the same thing to both developers and business users.
 - **Order Status** has the same life cycle across the application: Pending, Shipped, Delivered.
 
 ### 2. Entities ###
 Objects that **have a distinct identity**, such as OrderItem, which persist over time.
 ```c#
-public record OrderItem(
-    Guid Id,
-    string ProductName,
-    decimal Price,
-    int Quantity);
+public class OrderItem
+{
+    public required Guid Id { get; set; }
+    public required string ProductName { get; set; }
+    public required decimal Price { get; set; }
+    public required int Quantity { get; set; }
+}
 ```
 
 
@@ -57,11 +59,13 @@ public record Price
 An Aggregate is a **cluster of related objects** treated as a single unit.  
 Example of an Order aggregate with OrderItems:
 ```c#
-public record Order(
-    Guid Id,
-    DateTime OrderDate,
-    Customer Customer,
-    List<OrderItem> Items);
+public class Order
+{
+    public required Guid Id { get; set; }
+    public required DateTime OrderDate { get; set; }
+    public required Customer Customer { get; set; }
+    public required List<OrderItem> Items { get; set; }
+}
 ```
 
 ### 5. Repositories ###
@@ -92,22 +96,26 @@ A Bounded Context defines clear **boundaries around a specific domain model**, p
 
 For example, the Order aggregate in the **Sales Context might contain customer and payment details**.
 ```c#
-public record Order(
-    Guid Id,
-    DateTime OrderDate,
-    Customer Customer,
-    List<OrderItem> Items,
-    Payment Payment);
+public record Order
+{
+    public required Guid Id { get; set; }
+    public required DateTime OrderDate { get; set; }
+    public required Customer Customer { get; set; }
+    public required List<OrderItem> Items { get; set; }
+    public required Payment Payment { get; set; }
+}
 ```
 
 While the Order aggregate in the **Shipping Context might only include shipping-related information**.
 ```c#
-public record Order(
-    Guid Id,
-    DateTime OrderDate,
-    List<OrderItem> Items,
-    ShippingAddress ShippingAddress,
-    string TrackingNumber);
+public class Order
+{
+    public required Guid Id { get; set; }
+    public required DateTime OrderDate { get; set; }
+    public required List<OrderItem> Items { get; set; }
+    public required ShippingAddress ShippingAddress { get; set; }
+    public required string TrackingNumber { get; set; }
+}
 ```
 
 ### 2. Domain Events ###
@@ -135,7 +143,11 @@ public class OrderFactory
 {
     public static Order CreateOrder(Customer customer, List<OrderItem> items)
     {
-        var order = new Order(customer.Id);
+        var order = new Order()
+        {
+            CustomerId = customer.Id;
+            .........
+        };
         foreach (var item in items)
         {
             order.AddItem(item);
